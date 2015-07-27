@@ -37,7 +37,8 @@ public final class ChangePasswordInput extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private ChangePasswordInput(
+  @SuppressWarnings("unused")
+private ChangePasswordInput(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

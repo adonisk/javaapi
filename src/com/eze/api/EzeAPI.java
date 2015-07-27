@@ -1,16 +1,15 @@
-package com.eze.client;
+package com.eze.api;
 
-import java.io.File;
-import java.io.FileInputStream;
+//import java.io.File;
+//import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLDecoder;
+//import java.net.URLDecoder;
 import java.nio.ByteBuffer;
-import java.util.Properties;
+//import java.util.Properties;
 
 import com.eze.exception.APIException;
-import com.eze.exception.EzeInputException;
 import com.eze.ezecli.*;
 import com.eze.ezecli.ApiInput.MessageType;
 import com.eze.ezecli.ApiOutput.EventType;
@@ -19,15 +18,15 @@ import com.eze.ezecli.LoginInput.LoginMode;
 import com.eze.ezecli.TxnInput.TxnType;
 import com.google.protobuf.InvalidProtocolBufferException;
 
-public class JavaAPI {
+public class EzeAPI {
 
 	private InputStream in;
 	private OutputStream out;
 	private InputStream err;
 	private Process p;
-	private static JavaAPI API;
+	private static EzeAPI API;
 	
-	private JavaAPI() {
+	private EzeAPI() {
 	}
 	
 	/** 
@@ -46,12 +45,12 @@ public class JavaAPI {
 	/** 
 	 * Method returns the Singleton instance of JavaAPI.
 	 * 
-	 * @return JavaAPI object
+	 * @return EzeAPI object
 	 */
-	public static JavaAPI getInstance() throws Exception {
+	public static EzeAPI getInstance() throws Exception {
 		
 		if (null == API) {
-			API = new JavaAPI();
+			API = new EzeAPI();
 			API.initialize();
 		}
 		return API;
@@ -68,7 +67,7 @@ public class JavaAPI {
 			if (null != p) {
 				p.destroy();
 			} 
-			p = rt.exec(getEzecliFile());
+			p = rt.exec(getEzecliPath());
 			in = p.getInputStream();
 			out = p.getOutputStream();
 			err = p.getErrorStream();
@@ -87,7 +86,7 @@ public class JavaAPI {
 		}
 	}
 
-	public JavaAPI login(String userName, String password) throws Exception {
+	public APIResult login(String userName, String password) throws APIException {
 		System.out.println("...Login User <"+userName+":"+password+">");
 		
 		LoginInput loginInput = LoginInput.newBuilder()
@@ -110,14 +109,14 @@ public class JavaAPI {
 			break;
 		}
 
-		return this;
+		return result;
 	}
 	
 	public void quit() throws APIException {
 		this.logout().exit();
 	}
 	
-	private JavaAPI logout() throws APIException {
+	private EzeAPI logout() throws APIException {
 		System.out.println("...logging out");
 		
 		ApiInput apiInput = ApiInput.newBuilder()
@@ -137,7 +136,7 @@ public class JavaAPI {
 		return this;
 	}
 		
-	private JavaAPI exit() throws APIException {
+	private EzeAPI exit() throws APIException {
 		System.out.println("...exiting");
 		ApiInput apiInput = ApiInput.newBuilder()
 				.setMsgType(MessageType.EXIT)
@@ -156,7 +155,7 @@ public class JavaAPI {
 		return this;
 	}
 	
-	public JavaAPI prepareDevice() throws APIException {
+	public EzeAPI prepareDevice() throws APIException {
 		System.out.println("...Preparing Device");
 		
 		ApiInput apiInput = ApiInput.newBuilder()
@@ -196,13 +195,13 @@ public class JavaAPI {
 			txnType = TxnType.CARD_PRE_AUTH;
 		}
 				
-		if (amount <= 0) throw new EzeInputException("Amount is 0 or negative");
+		if (amount <= 0) throw new APIException("Amount is 0 or negative");
 		if (txnType == TxnType.CHEQUE) {
 			if ((null == options) ||
 				(null == options.getChequeNo()) || (options.getChequeNo().isEmpty()) ||
 				(null == options.getBankCode()) || (options.getBankCode().isEmpty()) ||
 				(null == options.getChequeDate())) {
-				throw new EzeInputException("Cheque details not passed for a Cheque transaction");
+				throw new APIException("Cheque details not passed for a Cheque transaction");
 			}
 		}
 		
@@ -301,7 +300,7 @@ public class JavaAPI {
 			}
 		}
 		
-		System.out.println(result.toString());
+		//System.out.println(result.toString());
 		return result;
 	}
 	
@@ -361,13 +360,15 @@ public class JavaAPI {
 		return offset;
 	}
 	
-	private String getEzecliFile() throws Exception {
-		Properties prop = new Properties();		
-		String propPath = new File(JavaAPI.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent();
-		String propFile = URLDecoder.decode(propPath+"\\config.properties", "UTF-8");
-	    System.out.println("propFile = " + propFile);
-	    prop.load(new FileInputStream(propFile));;
-	    return prop.getProperty("ezecli_file");
+	private String getEzecliPath() throws Exception {
+//		Properties prop = new Properties();		
+//		String propPath = new File(EzeAPI.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent();
+//		String propFile = URLDecoder.decode(propPath+"\\config.properties", "UTF-8");
+//	    System.out.println("propFile = " + propFile);
+//	    prop.load(new FileInputStream(propFile));
+//	    String ezeFile = prop.getProperty("ezecli_path");
+//	    return ezeFile;
+		return "c:\\program files\\ezetap\\ezecli\\ezecli.exe";
 	}
 	
 	private byte[] intToBytes(final int i) {
@@ -388,35 +389,4 @@ public class JavaAPI {
 		return (byteArr[3]) << 24 | (byteArr[2] & 0xFF) << 16
 				| (byteArr[1] & 0xFF) << 8 | (byteArr[0] & 0xFF);
 	}
-
-//	private void handleException(String message) throws EzeException {
-//	System.out.println(message);
-//
-//	if (message.contains("EPIC_LIB_ERROR_STATUS")) {
-//		throw new EzeStateException(message);
-//	} else {
-//		throw new EzeException(message);
-//	}
-//}
-
-//private String getMessage(ApiOutput apiOutput) {
-//	StringBuffer error = new StringBuffer();
-//	apiOutput.getEventType();
-//	
-//	try {
-//		error.append(apiOutput.getEventType()).append(": ");
-//		if (apiOutput.getOutData() != null
-//			&& !apiOutput.getOutData().isEmpty()) {
-//			StatusInfo statusInfo = StatusInfo.parseFrom(apiOutput.getOutData());
-//			error.append(statusInfo.getCode() + ": " + statusInfo.getMessage());
-//		} else {
-//			error.append(apiOutput.getMsgText());
-//			System.out.println(error.toString());
-//		}
-//	} catch (InvalidProtocolBufferException e) {
-//		error.append(e.getMessage());
-//		e.getStackTrace();
-//	}
-//	return error.toString();
-//}
 }

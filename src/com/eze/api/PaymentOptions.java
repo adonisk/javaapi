@@ -1,4 +1,4 @@
-package com.eze.client;
+package com.eze.api;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

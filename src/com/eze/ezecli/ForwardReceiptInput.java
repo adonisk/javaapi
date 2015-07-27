@@ -38,7 +38,8 @@ public final class ForwardReceiptInput extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private ForwardReceiptInput(
+  @SuppressWarnings("unused")
+private ForwardReceiptInput(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

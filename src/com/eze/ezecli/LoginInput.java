@@ -37,7 +37,8 @@ public final class LoginInput extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private LoginInput(
+  @SuppressWarnings("unused")
+private LoginInput(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

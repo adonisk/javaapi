@@ -37,7 +37,8 @@ public final class ProgressInfo extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private ProgressInfo(
+  @SuppressWarnings("unused")
+private ProgressInfo(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

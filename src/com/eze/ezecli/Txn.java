@@ -37,7 +37,8 @@ public final class Txn extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private Txn(
+  @SuppressWarnings("unused")
+private Txn(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

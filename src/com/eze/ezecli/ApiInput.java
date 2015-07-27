@@ -37,7 +37,8 @@ public final class ApiInput extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private ApiInput(
+  @SuppressWarnings("unused")
+private ApiInput(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

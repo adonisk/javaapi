@@ -37,7 +37,8 @@ public final class SignatureInput extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private SignatureInput(
+  @SuppressWarnings("unused")
+private SignatureInput(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

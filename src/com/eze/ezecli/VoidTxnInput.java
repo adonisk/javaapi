@@ -37,7 +37,8 @@ public final class VoidTxnInput extends
       getUnknownFields() {
     return this.unknownFields;
   }
-  private VoidTxnInput(
+  @SuppressWarnings("unused")
+private VoidTxnInput(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {

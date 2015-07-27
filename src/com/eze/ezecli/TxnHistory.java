@@ -234,7 +234,8 @@ public final class TxnHistory extends
         getUnknownFields() {
       return this.unknownFields;
     }
-    private SummaryItem(
+    @SuppressWarnings("unused")
+	private SummaryItem(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
